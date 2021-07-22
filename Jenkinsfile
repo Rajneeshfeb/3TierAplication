@@ -1,6 +1,3 @@
-//def workspace = "${env.WORKSPACE}"
-
- 
 properties([ disableConcurrentBuilds(), pipelineTriggers([githubPush()]) ]) 
  
 node{
