@@ -5,8 +5,8 @@ node{
       checkout scm
 
      stage('deploying stack'){
-      pip install ansible
-      ansible-playbook -C deploy.yml
+
+      sh 'ansible-playbook deploy.yml -vvv'
       } 
      
 }
