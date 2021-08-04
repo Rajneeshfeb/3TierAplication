@@ -213,7 +213,7 @@ Resources:
       ImageId: !Ref 'LatestAmiId'
       InstanceType: !Ref 'InstanceType'
       SecurityGroups:  [!Ref 'WebSecurityGroup']
-    #  IamInstanceProfile: !Ref 'WebServerInstanceProfile'
+      IamInstanceProfile: !Ref 'WebServerInstanceProfile'
       UserData: !Base64
         Fn::Join:
         - ''
@@ -229,4 +229,3 @@ Resources:
           '         --resource WebServerGroup ', '         --region ', !Ref 'AWS::Region',
           '
             ']
-
