@@ -18,4 +18,4 @@
         state: "present"
         region: "ap-south-1"
         disable_rollback: true
-        dest=templates-generated/cfn-template-gen.yml
+        template: templates-generated/cfn-template-gen.yml
