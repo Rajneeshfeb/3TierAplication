@@ -29,7 +29,7 @@ Resources:
     Properties:
       VpcId:
         Ref: VPC
-      GroupName: ec2ssmdocker
+      GroupName: String
       GroupDescription: "web"
       SecurityGroupIngress:
         - IpProtocol: tcp
