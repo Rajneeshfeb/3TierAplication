@@ -68,7 +68,7 @@ Resources:
     Type: AWS::EC2::Instance
     Properties:
       InstanceType: !Ref 'InstanceType'
-      SecurityGroupsIds: [!Ref 'WebSecurityGroup'] 
+      SecurityGroups: [!Ref 'WebSecurityGroup'] 
       KeyName: !Ref 'KeyName'
       ImageId: !Ref 'LatestAmiId'
 
@@ -79,7 +79,7 @@ Resources:
       CrossZone: 'true'
       Listeners:
       - LoadBalancerPort: '80'
-        InstancePort: '8080'
+        InstancePort: '80'
         Protocol: HTTP
       HealthCheck:
         Target: HTTP:80/
