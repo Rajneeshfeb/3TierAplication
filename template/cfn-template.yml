@@ -27,9 +27,6 @@ Resources:
   WebSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      VpcId:
-        Ref: VPC
-      GroupName: String
       GroupDescription: "web"
       SecurityGroupIngress:
         - IpProtocol: tcp
@@ -37,6 +34,8 @@ Resources:
             Ref: WebPort
           ToPort:
             Ref: WebPort
+      VpcId:
+        Ref: VPC
 
   DBSecurityGroup:
     Type: AWS::EC2::SecurityGroup
