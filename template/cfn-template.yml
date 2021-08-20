@@ -68,7 +68,7 @@ Resources:
     Type: AWS::EC2::Instance
     Properties:
       InstanceType: !Ref 'InstanceType'
-      SecurityGroups: [!Ref 'WebSecurityGroup']
+      SecurityGroupsIds: [Fn::GetAtt, GroupId] [!Ref 'WebSecurityGroup']
       KeyName: !Ref 'KeyName'
       ImageId: !Ref 'LatestAmiId'
        
