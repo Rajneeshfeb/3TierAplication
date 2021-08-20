@@ -71,12 +71,7 @@ Resources:
       SecurityGroups: [!Ref 'WebSecurityGroup']
       KeyName: !Ref 'KeyName'
       ImageId: !Ref 'LatestAmiId'
-        userdata:
-        '  #!/bin/bash
-          yum insta awscli
-          aws s3 cp bucketname/abc.jar  /opt/application.jar
-          java -jar /opt/application.jar
-          '
+       
   ElasticLoadBalancer:
     Type: AWS::ElasticLoadBalancing::LoadBalancer
     Properties:
