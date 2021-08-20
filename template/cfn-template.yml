@@ -68,10 +68,10 @@ Resources:
     Type: AWS::EC2::Instance
     Properties:
       InstanceType: !Ref 'InstanceType'
-      SecurityGroupsIds: [Fn::GetAtt, GroupId] [!Ref 'WebSecurityGroup']
+      SecurityGroupsIds: [!Ref 'WebSecurityGroup'] 
       KeyName: !Ref 'KeyName'
       ImageId: !Ref 'LatestAmiId'
-       
+
   ElasticLoadBalancer:
     Type: AWS::ElasticLoadBalancing::LoadBalancer
     Properties:
