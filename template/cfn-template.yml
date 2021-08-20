@@ -1,9 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: 3 tier web aplication
 Parameters:
-  subnet0:
-    Type: AWS::EC2::Subnet::Id
-    Default: {{data.subnet0}}
   VPC:
     Type: AWS::EC2::VPC::Id
     Default: {{ data.vpc }}
@@ -74,45 +71,12 @@ Resources:
       SecurityGroups: [!Ref 'WebSecurityGroup']
       KeyName: !Ref 'KeyName'
       ImageId: !Ref 'LatestAmiId'
-      UserData: !Base64
-        Fn::Join:
-        - ''
-        - ['#!/bin/bash -xe
-
-            ', 'yum update -y aws-cfn-bootstrap
-
-            ', '/opt/aws/bin/cfn-init -v ', '         --stack ', !Ref 'AWS::StackName',
-          '         --resource LaunchConfig ', '         --configsets full_install ',
-          '         --region ', !Ref 'AWS::Region', '
-
-            ', '/opt/aws/bin/cfn-signal -e $? ', '         --stack ', !Ref 'AWS::StackName',
-          '         --resource WebServerGroup ', '         --region ', !Ref 'AWS::Region',
+        userdata:
+        '  #!/bin/bash
+          yum insta awscli
+          aws s3 cp bucketname/abc.jar  /opt/application.jar
+          java -jar /opt/application.jar
           '
-            ']
-    
-  DBInstance:
-    Type: AWS::EC2::Instance
-    Properties:
-      InstanceType: !Ref 'InstanceType'
-      SecurityGroups: [!Ref 'DBSecurityGroup']
-      KeyName: !Ref 'KeyName'
-      ImageId: !Ref 'LatestAmiId'
-      UserData: !Base64
-        Fn::Join:
-        - ''
-        - ['#!/bin/bash -xe
-
-            ', 'yum update -y aws-cfn-bootstrap
-
-            ', '/opt/aws/bin/cfn-init -v ', '         --stack ', !Ref 'AWS::StackName',
-          '         --resource LaunchConfig ', '         --configsets full_install ',
-          '         --region ', !Ref 'AWS::Region', '
-
-            ', '/opt/aws/bin/cfn-signal -e $? ', '         --stack ', !Ref 'AWS::StackName',
-          '         --resource WebServerGroup ', '         --region ', !Ref 'AWS::Region',
-          '
-            ']
-  
   ElasticLoadBalancer:
     Type: AWS::ElasticLoadBalancing::LoadBalancer
     Properties:
@@ -120,7 +84,7 @@ Resources:
       CrossZone: 'true'
       Listeners:
       - LoadBalancerPort: '80'
-        InstancePort: '80'
+        InstancePort: '8080'
         Protocol: HTTP
       HealthCheck:
         Target: HTTP:80/
@@ -143,89 +107,7 @@ Resources:
         WaitOnResourceSignals: 'true'
     Properties:
       AvailabilityZones: !GetAZs ''
-      LaunchConfigurationName: !Ref 'LaunchConfig'
+      LaunchConfigurationName: !Ref 'WebInstance'
       MinSize: '1'
       MaxSize: '2'
       LoadBalancerNames: [!Ref 'ElasticLoadBalancer']
-
-  LaunchConfig:
-    Type: AWS::AutoScaling::LaunchConfiguration
-    Metadata:
-      AWS::CloudFormation::Init:
-        configSets:
-          full_install: [install_cfn, install_app, verify_instance_health]
-        install_cfn:
-          files:
-            /etc/cfn/cfn-hup.conf:
-              content: !Join ['', ['[main]
-
-                    ', stack=, !Ref 'AWS::StackId', '
-
-                    ', region=, !Ref 'AWS::Region', '
-
-                    ']]
-              mode: '000400'
-              owner: root
-              group: root
-            /etc/cfn/hooks.d/cfn-auto-reloader.conf:
-              content: !Join ['', ['[cfn-auto-reloader-hook]
-
-                    ', 'triggers=post.update
-
-                    ', 'path=Resources.WebServerInstance.Metadata.AWS::CloudFormation::Init
-
-                    ', 'action=/opt/aws/bin/cfn-init -v ', '         --stack ', !Ref 'AWS::StackName',
-                  '         --resource WebServerInstance ', '         --configsets
-                    full_install ', '         --region ', !Ref 'AWS::Region', '
-
-                    ', 'runas=root
-
-                    ']]
-          services:
-            sysvinit:
-              cfn-hup:
-                enabled: 'true'
-                ensureRunning: 'true'
-                files: [/etc/cfn/cfn-hup.conf, /etc/cfn/hooks.d/cfn-auto-reloader.conf]
-        install_app:
-          packages:
-            yum:
-              httpd: []
-          file:
-            src: 'www/*'
-            dest: '/var/www/''
-          services:
-            sysvinit:
-              httpd:
-                enabled: 'true'
-                ensureRunning: 'true'
-        verify_instance_health:
-          commands:
-            ELBHealthCheck:
-              command: !Join ['', ['until [ "$state" == "\"InService\"" ]; do ', '  state=$(aws
-                    --region ', !Ref 'AWS::Region', ' elb describe-instance-health ',
-                  '              --load-balancer-name ', !Ref 'ElasticLoadBalancer',
-                  '              --instances $(curl -s http://169.254.169.254/latest/meta-data/instance-id) ',
-                  '              --query InstanceStates[0].State); ', '  sleep 10; ',
-                  done]]
-    Properties:
-      KeyName: !Ref 'KeyName'
-      ImageId: !Ref 'LatestAmiId'
-      InstanceType: !Ref 'InstanceType'
-      SecurityGroups:  [!Ref 'WebSecurityGroup']
-      IamInstanceProfile: !Ref 'WebServerInstanceProfile'
-      UserData: !Base64
-        Fn::Join:
-        - ''
-        - ['#!/bin/bash -xe
-
-            ', 'yum update -y aws-cfn-bootstrap
-
-            ', '/opt/aws/bin/cfn-init -v ', '         --stack ', !Ref 'AWS::StackName',
-          '         --resource LaunchConfig ', '         --configsets full_install ',
-          '         --region ', !Ref 'AWS::Region', '
-
-            ', '/opt/aws/bin/cfn-signal -e $? ', '         --stack ', !Ref 'AWS::StackName',
-          '         --resource WebServerGroup ', '         --region ', !Ref 'AWS::Region',
-          '
-            ']

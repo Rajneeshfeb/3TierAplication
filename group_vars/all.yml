@@ -1,10 +1,9 @@
 data:
-    vpc: vpc-08b1db4a37659e6e3
-    subnet0: subnet-0d45e736b1ebbdb33
-    web_port: 80 
-    db_port: 3306
-    lb_port: 80
-    ec2_key: 2tierapp
-    instace_type: t2.micro
-    ami_id: ami-0d2692b6acea72ee6
-    region: ap-south-1
+ vpc: vpc-6481a80c
+ web_port: 80 
+ db_port: 3306
+ lb_port: 80
+ ec2_key: 2tierapp
+ instace_type: t2.micro
+ ami_id: ami-04db49c0fb2215364
+ region: ap-south-1
