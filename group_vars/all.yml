@@ -1,6 +1,6 @@
 data:
  vpc: vpc-6481a80c
- web_port: 80 
+ web_port: 8080
  db_port: 3306
  lb_port: 80
  ec2_key: node
