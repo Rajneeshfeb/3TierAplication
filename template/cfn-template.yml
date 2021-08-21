@@ -28,7 +28,6 @@ Resources:
     Type: AWS::EC2::SecurityGroup
     Properties: 
       GroupDescription: "Web Security"
-      GroupName: WebSG
       SecurityGroupIngress: 
        - IpProtocol: tcp
          FromPort:
@@ -72,7 +71,7 @@ Resources:
       KeyName:  !Ref 'KeyName'
       AssociatePublicIpAddress: false
       ImageId: !Ref 'LatestAmiId'
-      SecurityGroupIds: !Ref WebSecurityGroup
+      SecurityGroupIds: !Ref WebSecurityGroup Fn::GetAtt
       BlockDeviceMappings:
         -
           DeviceName: "/dev/xvda"
