@@ -102,7 +102,7 @@ Resources:
     CreationPolicy:
       ResourceSignal:
         Timeout: PT15M
-        Count: '2'
+        Count: '1'
     UpdatePolicy:
       AutoScalingRollingUpdate:
         MaxBatchSize: '1'
