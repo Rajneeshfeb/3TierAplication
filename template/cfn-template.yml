@@ -64,14 +64,22 @@ Resources:
             Ref: LbPort
           CidrIp: 0.0.0.0/0
   
-  WebInstance:
-    Type: AWS::EC2::Instance
+  LaunchConfig:
+    Type: "AWS::AutoScaling::LaunchConfiguration"
     Properties:
-      InstanceType: !Ref 'InstanceType'
-      SecurityGroups: [!Ref 'WebSecurityGroup'] 
-      KeyName: !Ref 'KeyName'
+      InstanceType: "t2.micro"
+      KeyName:  !Ref 'KeyName'
+      AssociatePublicIpAddress: false
       ImageId: !Ref 'LatestAmiId'
-
+      SecurityGroups: !Ref WebSecurityGroup
+      BlockDeviceMappings:
+      -
+        DeviceName: "/dev/xvda"
+        Ebs:
+          VolumeSize: 8
+          VolumeType: gp2
+          DeleteOnTermination: true
+  
   ElasticLoadBalancer:
     Type: AWS::ElasticLoadBalancing::LoadBalancer
     Properties:
@@ -102,7 +110,7 @@ Resources:
         WaitOnResourceSignals: 'true'
     Properties:
       AvailabilityZones: !GetAZs ''
-      LaunchConfigurationName: !Ref 'WebInstance'
+      LaunchConfigurationName: !Ref 'Launchconfig'
       MinSize: '1'
       MaxSize: '2'
       LoadBalancerNames: [!Ref 'ElasticLoadBalancer']
