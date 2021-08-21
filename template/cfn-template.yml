@@ -110,7 +110,7 @@ Resources:
         WaitOnResourceSignals: 'true'
     Properties:
       AvailabilityZones: !GetAZs ''
-      LaunchConfigurationName: !Ref 'Launchconfig'
+      LaunchConfigurationName: !Ref 'LaunchConfig'
       MinSize: '1'
       MaxSize: '2'
       LoadBalancerNames: [!Ref 'ElasticLoadBalancer']
