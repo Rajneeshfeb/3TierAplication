@@ -26,16 +26,17 @@ Parameters:
 Resources:
   WebSecurityGroup:
     Type: AWS::EC2::SecurityGroup
-    Properties:
-      VpcId:
+    Properties: 
+      GroupDescription: "Web Security"
+      GroupName: WebSG
+      SecurityGroupIngress: 
+       - IpProtocol: tcp
+         FromPort:
+          Ref: WebPort
+         ToPort:
+          Ref: WebPort
+      VpcId: 
         Ref: VPC
-      GroupDescription: "webSecurity"
-      SecurityGroupIngress:
-        - IpProtocol: tcp
-          FromPort:
-            Ref: WebPort
-          ToPort:
-            Ref: WebPort
 
   DBSecurityGroup:
     Type: AWS::EC2::SecurityGroup
