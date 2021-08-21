@@ -3,7 +3,7 @@ data:
  web_port: 80 
  db_port: 3306
  lb_port: 80
- ec2_key: 2tierapp
+ ec2_key: node
  instace_type: t2.micro
  ami_id: ami-04db49c0fb2215364
  region: ap-south-1
