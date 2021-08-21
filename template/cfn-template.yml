@@ -71,7 +71,7 @@ Resources:
       KeyName:  !Ref 'KeyName'
       AssociatePublicIpAddress: false
       ImageId: !Ref 'LatestAmiId'
-      SecurityGroupIds: !Ref WebSecurityGroup Fn::GetAtt
+      SecurityGroupIds: !Ref WebSecurityGroup
       BlockDeviceMappings:
         -
           DeviceName: "/dev/xvda"
