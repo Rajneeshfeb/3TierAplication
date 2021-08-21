@@ -27,15 +27,16 @@ Resources:
   WebSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
+      VpcId:
+        Ref: VPC
       GroupDescription: "web"
+      SecurityGroupIds: sg-342eee58
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort:
             Ref: WebPort
           ToPort:
             Ref: WebPort
-      VpcId:
-        Ref: VPC
 
   DBSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -71,7 +72,7 @@ Resources:
       KeyName:  !Ref 'KeyName'
       AssociatePublicIpAddress: false
       ImageId: !Ref 'LatestAmiId'
-      SecurityGroups: !Ref WebSecurityGroup
+      SecurityGroupIds: !Ref WebSecurityGroup
       BlockDeviceMappings:
         -
           DeviceName: "/dev/xvda"
