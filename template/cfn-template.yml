@@ -80,7 +80,11 @@ Resources:
             VolumeSize: 8
             VolumeType: "gp2"
             DeleteOnTermination: "true"
-  
+      UserData: !Base64 |
+        #!/bin/bash -x
+        yum install -y tomcat-webapps tomcat-admin-webapps 
+        systemctl start tomcat
+
   ElasticLoadBalancer:
     Type: AWS::ElasticLoadBalancing::LoadBalancer
     Properties:
@@ -88,10 +92,10 @@ Resources:
       CrossZone: 'true'
       Listeners:
       - LoadBalancerPort: '80'
-        InstancePort: '80'
+        InstancePort: '8080'
         Protocol: HTTP
       HealthCheck:
-        Target: HTTP:80/
+        Target: HTTP:8080/
         HealthyThreshold: '3'
         UnhealthyThreshold: '5'
         Interval: '30'
