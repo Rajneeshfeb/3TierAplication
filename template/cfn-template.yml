@@ -30,8 +30,8 @@ Resources:
       VpcId:
         Ref: VPC
       GroupDescription: "web"
-      SecurityGroupIds: sg-342eee58
-      SecurityGroupIngress:
+      Type: string
+    SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort:
             Ref: WebPort
