@@ -29,8 +29,7 @@ Resources:
     Properties:
       VpcId:
         Ref: VPC
-      GroupDescription: "web"
-      Type: string
+      GroupDescription: "webSecurity"
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort:
