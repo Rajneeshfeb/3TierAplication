@@ -73,12 +73,12 @@ Resources:
       ImageId: !Ref 'LatestAmiId'
       SecurityGroups: !Ref WebSecurityGroup
       BlockDeviceMappings:
-      -
-        DeviceName: "/dev/xvda"
-        Ebs:
-          VolumeSize: 8
-          VolumeType: gp2
-          DeleteOnTermination: true
+        -
+          DeviceName: "/dev/xvda"
+          Ebs:
+            VolumeSize: 8
+            VolumeType: gp2
+            DeleteOnTermination: true
   
   ElasticLoadBalancer:
     Type: AWS::ElasticLoadBalancing::LoadBalancer
