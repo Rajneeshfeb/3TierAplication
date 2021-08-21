@@ -67,18 +67,19 @@ Resources:
   LaunchConfig:
     Type: "AWS::AutoScaling::LaunchConfiguration"
     Properties:
-      InstanceType: "t2.micro"
+      ImageId: !Ref LatestAmiId
+      AssociatePublicIpAddress: 'false'
+      SecurityGroups: 
+        - Ref: "WebSecurityGroup"
+      InstanceType: 
+        Ref: "InstanceType"
       KeyName:  !Ref 'KeyName'
-      AssociatePublicIpAddress: false
-      ImageId: !Ref 'LatestAmiId'
-      SecurityGroupIds: !Ref WebSecurityGroup
-      BlockDeviceMappings:
-        -
-          DeviceName: "/dev/xvda"
-          Ebs:
+      BlockDeviceMappings: 
+        - DeviceName: /dev/xvda
+          Ebs: 
             VolumeSize: 8
-            VolumeType: gp2
-            DeleteOnTermination: true
+            VolumeType: "gp2"
+            DeleteOnTermination: "true"
   
   ElasticLoadBalancer:
     Type: AWS::ElasticLoadBalancing::LoadBalancer
